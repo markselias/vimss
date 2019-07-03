@@ -18,9 +18,9 @@ flags.DEFINE_string(
 flags.DEFINE_string(
     'gcs_output_path', 'gs://vimsstfrecords/urmpv2-labels', 'GCS path for uploading the dataset.')
 flags.DEFINE_string(
-    'local_scratch_dir', '/dev/tfrecords/urmpv2', 'Scratch directory path for temporary files.')
+    'local_scratch_dir', '/home/elias/projects/nn/tfrecords', 'Scratch directory path for temporary files.')
 flags.DEFINE_string(
-    'raw_data_dir', '/home/olga/urmpv2', 'Directory path for raw URMP dataset. '
+    'raw_data_dir', '/home/elias/projects/nn/dataset', 'Directory path for raw URMP dataset. '
     'Should have train and test subdirectories inside it.')
 
 
