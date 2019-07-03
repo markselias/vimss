@@ -1,3 +1,4 @@
+tf==1.7.1
 sacred==0.7.3
 librosa==0.6.1
 scikit-image==0.13.1
