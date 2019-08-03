@@ -34,7 +34,7 @@ def cfg():
                     "training_steps": 2000*100, # Number of training steps per training
                     "evaluation_steps": 1000,
                     "use_tpu": True,
-                    "use_bfloat16": True,
+                    "use_bfloat16": False,
                     "load_model": True,
                     "predict_only": False,
                     "write_audio_summaries": False,
