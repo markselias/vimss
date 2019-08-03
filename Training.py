@@ -28,13 +28,13 @@ def cfg():
     # Base configuration
     model_config = {"mode": 'train_and_eval', # 'predict'
                     "log_dir": "logs", # Base folder for logs files
-                    "batch_size": 32, # Batch size
+                    "batch_size": 64, # Batch size
                     "init_sup_sep_lr": 1e-5, # Supervised separator learning rate
                     "epoch_it": 2000, # Number of supervised separator steps per epoch
                     "training_steps": 2000*100, # Number of training steps per training
                     "evaluation_steps": 1000,
                     "use_tpu": True,
-                    "use_bfloat16": True,
+                    "use_bfloat16": False,
                     "load_model": True,
                     "predict_only": False,
                     "write_audio_summaries": False,
