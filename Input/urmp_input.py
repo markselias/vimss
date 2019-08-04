@@ -190,8 +190,8 @@ class URMPInput(object):
                 drop_remainder=True))
 
         def filter_fn(x, y):
-            print("######################################## ", x, x.shape)
-            print("######################################## ", y, y.shape)
+            print("######################################## ", x)
+            print("######################################## ", y)
             contains_nan = tf.debugging.check_numerics(x, "#######################nan in dataset")
             print(bool(contains_nan))
             # if contains_nan:
