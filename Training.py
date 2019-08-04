@@ -319,7 +319,8 @@ def experiment(model_config):
             tpu_config=tpu.TPUConfig(
                 iterations_per_loop=500,
                 num_shards=8,
-                per_host_input_for_training=tpu.InputPipelineConfig.PER_HOST_V1))  # pylint: disable=line-too-long
+                #per_host_input_for_training=tpu.InputPipelineConfig.PER_HOST_V1
+                ))  # pylint: disable=line-too-long
     else:
         config = tpu.RunConfig(
             # cluster=tpu_cluster_resolver,
