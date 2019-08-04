@@ -181,11 +181,12 @@ class URMPInput(object):
 
         # dataset = self.mean_imputer.fit_transform(dataset)
         def filter_fn(x):
-            print("######################################## ", x, x.shape)
-            contains_nan = np.isnan(x)
-            if contains_nan:
-                print("###################################nano dimmerda")
-            return not contains_nan
+            # print("######################################## ", x, x.shape)
+            contains_nan = tf.debugging.check_numerics(x, "#######################nan in dataset")
+            print(bool(contains_nan))
+            # if contains_nan:
+            #     print("###################################nano dimmerda")
+            return True #not contains_nan
 
         dataset = dataset.filter(filter_fn)
 
