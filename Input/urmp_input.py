@@ -184,7 +184,7 @@ class URMPInput(object):
             contains_nan = isnan(x)
             if contains_nan:
                 print("###################################nano dimmerda")
-            return !contains_nan
+            return not contains_nan
 
         dataset = dataset.filter(filter_fn)
 
