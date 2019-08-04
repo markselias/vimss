@@ -181,6 +181,7 @@ class URMPInput(object):
 
         # dataset = self.mean_imputer.fit_transform(dataset)
         def filter_fn(x):
+            print("######################################## ", x, x.shape)
             contains_nan = np.isnan(x)
             if contains_nan:
                 print("###################################nano dimmerda")
