@@ -189,8 +189,9 @@ class URMPInput(object):
                 num_parallel_batches=8,    # 8 == num_cores per host
                 drop_remainder=True))
 
-        def filter_fn(x):
-            # print("######################################## ", x, x.shape)
+        def filter_fn(x, y):
+            print("######################################## ", x, x.shape)
+            print("######################################## ", y, y.shape)
             contains_nan = tf.debugging.check_numerics(x, "#######################nan in dataset")
             print(bool(contains_nan))
             # if contains_nan:
