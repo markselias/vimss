@@ -9,6 +9,11 @@ import os
 
 import tensorflow as tf
 import functools
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+from sklearn.impute import SimpleImputer
 
 #bn, cl, db, fl, hn, ob, sax, tba, tbn, tbt, va, vc, vn
 CHANNEL_NAMES = ['.stem_mix.wav', '.stem_bn.wav', '.stem_cl.wav', '.stem_db.wav', '.stem_fl.wav', '.stem_hn.wav', '.stem_ob.wav',
@@ -72,6 +77,7 @@ class URMPInput(object):
         if self.data_dir == 'null' or self.data_dir == '':
             self.data_dir = None
         self.transpose_input = transpose_input
+        self.mean_imputer = SimpleImputer(missin_values=np.nan, startegy='mean')
 
     def set_shapes(self, batch_size, features, sources):
         """Statically set the batch_size dimension."""
@@ -168,7 +174,7 @@ class URMPInput(object):
             tf.contrib.data.parallel_interleave(
                 fetch_dataset, cycle_length=6, sloppy=True))
         # dataset = dataset.shuffle(1024, reshuffle_each_iteration=True)
-
+        dataset = self.mean_imputer.fit_transform(dataset)
         # Parse, preprocess, and batch the data in parallel
         dataset = dataset.apply(
             tf.contrib.data.map_and_batch(
