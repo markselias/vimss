@@ -154,7 +154,7 @@ class URMPInput(object):
         # Shuffle the filenames to ensure better randomization.
         file_pattern = os.path.join(
             self.data_dir, 'train-*' if self.mode == 'train' else 'test-*')
-        dataset = tf.data.Dataset.list_files(file_pattern, shuffle=(self.mode == 'train'))
+        dataset = tf.data.Dataset.list_files(file_pattern, shuffle=False) # shuffle=(self.mode == 'train'))
         if self.mode == 'train':
             dataset = dataset.repeat()
 
@@ -167,7 +167,7 @@ class URMPInput(object):
         dataset = dataset.apply(
             tf.contrib.data.parallel_interleave(
                 fetch_dataset, cycle_length=6, sloppy=True))
-        dataset = dataset.shuffle(1024, reshuffle_each_iteration=True)
+        # dataset = dataset.shuffle(1024, reshuffle_each_iteration=True)
 
         # Parse, preprocess, and batch the data in parallel
         dataset = dataset.apply(
