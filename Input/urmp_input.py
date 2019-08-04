@@ -189,16 +189,19 @@ class URMPInput(object):
                 num_parallel_batches=8,    # 8 == num_cores per host
                 drop_remainder=True))
 
-        def filter_fn(x, y):
-            print("######################################## ", x)
-            print("######################################## ", y)
-            contains_nan = tf.debugging.check_numerics(y, "%%%%%%%%%%%%%%%%%%%%%%%%%%%% nan in dataset")
-            print(contains_nan is not None)
-            # if contains_nan:
-            #     print("###################################nano dimmerda")
-            return True #not contains_nan
+        # def filter_fn(x, y):
+        #     print("######################################## ", x)
+        #     print("######################################## ", y)
+        #     contains_nan = tf.debugging.check_numerics(y, "%%%%%%%%%%%%%%%%%%%%%%%%%%%% nan in dataset")
+        #     print(contains_nan is not None)
+        #     # if contains_nan:
+        #     #     print("###################################nano dimmerda")
+        #     return True #not contains_nan
+        #
+        # dataset = dataset.filter(filter_fn)
 
-        dataset = dataset.filter(filter_fn)
+        for batchh in dataset:
+            print("#################################", batchh)
 
         # Assign static batch size dimension
         dataset = dataset.map(functools.partial(self.set_shapes, batch_size))
