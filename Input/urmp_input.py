@@ -180,6 +180,15 @@ class URMPInput(object):
         # dataset = dataset.shuffle(1024, reshuffle_each_iteration=True)
 
         # dataset = self.mean_imputer.fit_transform(dataset)
+
+
+        # Parse, preprocess, and batch the data in parallel
+        dataset = dataset.apply(
+            tf.contrib.data.map_and_batch(
+                self.dataset_parser, batch_size=batch_size,
+                num_parallel_batches=8,    # 8 == num_cores per host
+                drop_remainder=True))
+
         def filter_fn(x):
             # print("######################################## ", x, x.shape)
             contains_nan = tf.debugging.check_numerics(x, "#######################nan in dataset")
@@ -189,13 +198,6 @@ class URMPInput(object):
             return True #not contains_nan
 
         dataset = dataset.filter(filter_fn)
-
-        # Parse, preprocess, and batch the data in parallel
-        dataset = dataset.apply(
-            tf.contrib.data.map_and_batch(
-                self.dataset_parser, batch_size=batch_size,
-                num_parallel_batches=8,    # 8 == num_cores per host
-                drop_remainder=True))
 
         # Assign static batch size dimension
         dataset = dataset.map(functools.partial(self.set_shapes, batch_size))
