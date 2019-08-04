@@ -36,7 +36,7 @@ FLAGS = flags.FLAGS
 TRAINING_DIRECTORY = 'train'
 TEST_DIRECTORY = 'test'
 
-TRAINING_SHARDS = 6
+TRAINING_SHARDS = 1 #6
 TEST_SHARDS = 3
 
 CHANNEL_NAMES = ['.stem_mix.wav', '.stem_bn.wav', '.stem_cl.wav', '.stem_db.wav', '.stem_fl.wav', '.stem_hn.wav', '.stem_ob.wav',
@@ -100,7 +100,7 @@ def _sources_floatlist_feature(value):
     return tf.train.Feature(float_list=tf.train.FloatList(value=flatten))
 
 
-def _convert_to_example(filename, sample_idx, data_buffer, num_sources, labels,
+def _convert_to_example(filename, sample_idx, data_buffer, num_sources, labels, basenames,
                         sample_rate=SAMPLE_RATE, channels=CHANNELS, num_samples=NUM_SAMPLES):
     """Creating a training or testing example. These examples are aggregated later in a batch.
     Each data example should consist of [mix, bass, drums, other, vocals] data and corresponding metadata
@@ -109,8 +109,14 @@ def _convert_to_example(filename, sample_idx, data_buffer, num_sources, labels,
     data_buffer here is a vector of size num_samples*(num_sources+1), the first channel is always "mix"
 
     """
+    if (os.path.basename(filename[0])).split("_")[:3] not in basenames:
+        basenames.append((os.path.basename(filename[0])).split("_")[:3])
+        current_basename = len(basenames) - 1
+    else:
+        current_basename = basenames.index((os.path.basename(filename[0])).split("_")[:3])
+
     example = tf.train.Example(features=tf.train.Features(feature={
-        'audio/file_basename': _bytes_feature("_".join((os.path.basename(filename[0])).split("_")[:3])),
+        'audio/file_basename': _int64_feature(current_basename), # _bytes_feature("_".join((os.path.basename(filename[0])).split("_")[:3])),
         'audio/sample_rate': _int64_feature(sample_rate),
         'audio/sample_idx': _int64_feature(sample_idx),
         'audio/num_samples': _int64_feature(num_samples),
@@ -163,6 +169,8 @@ def _process_audio_files_batch(chunk_data):
 
     writer = tf.python_io.TFRecordWriter(output_file)
 
+    basename_list = list()
+
     chunk_data_cache = list()
     for track in chunk_files:
         # load all wave files into memory and create a buffer
@@ -192,11 +200,16 @@ def _process_audio_files_batch(chunk_data):
         labels = get_labels_from_filename(chunk[0])
         example = _convert_to_example(filename=chunk[0], sample_idx=chunk[1],
                                       data_buffer=chunk[2], num_sources=chunk[3],
-                                      labels=labels)
+                                      labels=labels, basenames=basename_list)
         writer.write(example.SerializeToString())
 
     writer.close()
     tf.logging.info('Finished writing file: %s' % output_file)
+    with open(output_file + '_index', 'w') as filehandle:
+        count_entries = 0
+        for list_entry in basename_list:
+            filehandle.write('{0} {1}\n'.format(list_entry, str(count_entries)))
+            count_entries += 1
 
 
 def get_labels_from_filename(filename):

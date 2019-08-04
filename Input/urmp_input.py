@@ -193,7 +193,7 @@ class URMPInput(object):
             print("######################################## ", x)
             print("######################################## ", y)
             contains_nan = tf.debugging.check_numerics(y, "%%%%%%%%%%%%%%%%%%%%%%%%%%%% nan in dataset")
-            print(bool(contains_nan))
+            print(contains_nan is not None)
             # if contains_nan:
             #     print("###################################nano dimmerda")
             return True #not contains_nan
