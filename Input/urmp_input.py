@@ -201,7 +201,8 @@ class URMPInput(object):
         # dataset = dataset.filter(filter_fn)
 
         for batchh in dataset:
-            print("#################################", batchh)
+            # print("#################################", batchh)
+            tf.debugging.check_numerics(batchh[1], "%%%%%%%%%%%%%%%%%%%%%%%%%%%% nan in dataset")
 
         # Assign static batch size dimension
         dataset = dataset.map(functools.partial(self.set_shapes, batch_size))
