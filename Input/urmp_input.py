@@ -180,7 +180,14 @@ class URMPInput(object):
         # dataset = dataset.shuffle(1024, reshuffle_each_iteration=True)
 
         # dataset = self.mean_imputer.fit_transform(dataset)
-        
+        def filter_fn(x):
+            contains_nan = isnan(x)
+            if contains_nan:
+                print("###################################nano dimmerda")
+            return !contains_nan
+
+        dataset = dataset.filter(filter_fn)
+
         # Parse, preprocess, and batch the data in parallel
         dataset = dataset.apply(
             tf.contrib.data.map_and_batch(
