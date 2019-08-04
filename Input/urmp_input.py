@@ -170,11 +170,17 @@ class URMPInput(object):
             return dataset
 
         # Read the data from disk in parallel
-        dataset = dataset.apply(
-            tf.contrib.data.parallel_interleave(
-                fetch_dataset, cycle_length=6, sloppy=True))
+        # dataset = dataset.apply(
+        #     tf.contrib.data.parallel_interleave(
+        #         fetch_dataset, cycle_length=6, sloppy=True))
+
+        dataset = dataset.interleave(
+                fetch_dataset, cycle_length=6, num_parallel_calls=tf.data.experimental.AUTOTUNE)
+
         # dataset = dataset.shuffle(1024, reshuffle_each_iteration=True)
-        dataset = self.mean_imputer.fit_transform(dataset)
+
+        # dataset = self.mean_imputer.fit_transform(dataset)
+        
         # Parse, preprocess, and batch the data in parallel
         dataset = dataset.apply(
             tf.contrib.data.map_and_batch(
