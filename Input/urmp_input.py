@@ -77,7 +77,7 @@ class URMPInput(object):
         if self.data_dir == 'null' or self.data_dir == '':
             self.data_dir = None
         self.transpose_input = transpose_input
-        self.mean_imputer = SimpleImputer(missin_values=np.nan, startegy='mean')
+        self.mean_imputer = SimpleImputer(missing_values=np.nan, startegy='mean')
 
     def set_shapes(self, batch_size, features, sources):
         """Statically set the batch_size dimension."""
