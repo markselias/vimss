@@ -28,7 +28,7 @@ def cfg():
     # Base configuration
     model_config = {"mode": 'train_and_eval', # 'predict'
                     "log_dir": "logs", # Base folder for logs files
-                    "batch_size": 1, # Batch size
+                    "batch_size": 8, # Batch size
                     "init_sup_sep_lr": 1e-5, # Supervised separator learning rate
                     "epoch_it": 2000, # Number of supervised separator steps per epoch
                     "training_steps": 2000*100, # Number of training steps per training
@@ -319,7 +319,7 @@ def experiment(model_config):
             tpu_config=tpu.TPUConfig(
                 iterations_per_loop=500,
                 num_shards=8,
-                #per_host_input_for_training=tpu.InputPipelineConfig.PER_HOST_V1
+                per_host_input_for_training=tpu.InputPipelineConfig.PER_HOST_V1
                 ))  # pylint: disable=line-too-long
     else:
         config = tpu.RunConfig(
