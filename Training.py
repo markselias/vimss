@@ -355,7 +355,7 @@ def experiment(model_config):
     if model_config['mode'] == 'train_and_eval':
         tf.logging.info("Train the model")
         # Should be an early stopping here, but it will come with tf 1.10
-        print("dataaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", urmp_train.input_fn)
+        print("dataaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", urmp_train.input_fn())
         separator.train(
             input_fn=urmp_train.input_fn,
             steps=model_config['training_steps'])
