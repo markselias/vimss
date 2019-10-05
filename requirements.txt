@@ -5,7 +5,7 @@ soundfile
 scikits.audiolab
 lxml
 musdb==0.2.3
-museval
+museval==0.2.1
 google-cloud-storage
 ipdb
 pymongo
