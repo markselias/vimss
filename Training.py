@@ -216,7 +216,7 @@ def unet_separator(features, labels, mode, params):
         }
         return tpu_estimator.TPUEstimatorSpec(mode, predictions=predictions)
 
-    separator_loss = tf.add(tf.cast(tf.reduce_sum(tf.squared_difference(sources, separator_sources)), tf.float32), 0.01) 
+    separator_loss = tf.cast(tf.reduce_sum(tf.squared_difference(sources, separator_sources)), tf.float32)
 
     if mode != tf.estimator.ModeKeys.PREDICT:
         global_step = tf.train.get_global_step()
@@ -355,6 +355,7 @@ def experiment(model_config):
     if model_config['mode'] == 'train_and_eval':
         tf.logging.info("Train the model")
         # Should be an early stopping here, but it will come with tf 1.10
+        print("dataaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", urmp_train.input_f)
         separator.train(
             input_fn=urmp_train.input_fn,
             steps=model_config['training_steps'])
